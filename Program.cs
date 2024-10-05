@@ -20,6 +20,7 @@ namespace Helloworld
         {
         
         DataContextDapper dapper = new DataContextDapper();
+        DataContextEF entityFramework = new DataContextEF();
 
 
 
@@ -38,6 +39,9 @@ namespace Helloworld
                 Price = 943.45m,
                 VideoCard = "rtx 2060"
             };
+            
+            entityFramework.Add(computer);
+            entityFramework.SaveChanges();
 
             string sql = @"INSERT INTO TutorialAppSchema.Computer (
                 Motherboard,
@@ -56,16 +60,18 @@ namespace Helloworld
 
             
             Console.WriteLine(sql);
-            bool result =dapper.ExecuteSql(sql);
+            bool result = dapper.ExecuteSql(sql);
             Console.WriteLine(result);
 
             string sqlSelect = @"SELECT * FROM TutorialAppSchema.Computer";
 
             IEnumerable<Computer> computers = dapper.LoadData<Computer>(sqlSelect);
 
+
             foreach(Computer singleComputer in computers)
             {
-                Console.WriteLine("'" + computer.Motherboard
+                Console.WriteLine("'" + computer.ComputerId
+                        + "', '" + computer.Motherboard
                         + "', '" + computer.HasWifi
                         + "', '" + computer.HasLTE
                         + "', '" + computer.ReleaseDate
@@ -73,6 +79,25 @@ namespace Helloworld
                         + "', '" + computer.VideoCard
             + "')");
             }
+
+            Console.WriteLine(computer.Motherboard);
+
+            IEnumerable<Computer>? computerEF = entityFramework.Computer?.ToList<Computer>();
+            if(computerEF != null)
+            {
+                foreach(Computer singleComputer in computers)
+                {
+                    Console.WriteLine("'" + computer.ComputerId
+                            + "', '" + computer.Motherboard
+                            + "', '" + computer.HasWifi
+                            + "', '" + computer.HasLTE
+                            + "', '" + computer.ReleaseDate
+                            + "', '" + computer.Price
+                            + "', '" + computer.VideoCard
+                        + "')");
+                }
+            }
+
 
             Console.WriteLine(computer.Motherboard);
             
