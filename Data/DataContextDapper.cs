@@ -2,12 +2,21 @@ using System.Data;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Data.SqlClient;
 using Dapper;
+using Microsoft.Extensions.Configuration;
 
 namespace Helloworld.Data
 {
     public class DataContextDapper
     {
-        private string _connectionString = "Server=localhost;Database=DotNetCourseDatabase;TrustServerCertificate=true;Trusted_Connection=true;";
+        // private IConfiguration _config;
+
+        private string _connectionString;
+
+        public DataContextDapper (IConfiguration config)
+        {
+            // _config = config;
+            _connectionString = config.GetConnectionString("DefaultConnection");
+        }
 
         public IEnumerable<T> LoadData<T>(string sql)
         {

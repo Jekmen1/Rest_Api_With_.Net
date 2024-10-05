@@ -8,6 +8,8 @@ using Dapper;
 using Helloworld.Data;
 using Helloworld.Models;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 
 namespace Helloworld
@@ -18,9 +20,12 @@ namespace Helloworld
         
         public static void Main(string[] args)
         {
-        
-        DataContextDapper dapper = new DataContextDapper();
-        DataContextEF entityFramework = new DataContextEF();
+        IConfiguration config = new ConfigurationBuilder()
+        .AddJsonFile("appsettings.json")
+        .Build();
+
+        DataContextDapper dapper = new DataContextDapper(config);
+        DataContextEF entityFramework = new DataContextEF(config);
 
 
 

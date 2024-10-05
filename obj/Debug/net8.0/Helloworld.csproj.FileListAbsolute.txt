@@ -68,3 +68,10 @@ c:\Users\user\dotnet-course-code\HelloWORLD\bin\Debug\net8.0\runtimes\win\lib\ne
 c:\Users\user\dotnet-course-code\HelloWORLD\obj\Debug\net8.0\Helloworld.csproj.AssemblyReference.cache
 C:\Users\user\dotnet-course-code\HelloWORLD\obj\Debug\net8.0\Helloworld.csproj.Up2Date
 c:\Users\user\dotnet-course-code\HelloWORLD\obj\Debug\net8.0\Helloworld.sourcelink.json
+c:\Users\user\dotnet-course-code\HelloWORLD\bin\Debug\net8.0\Microsoft.Extensions.Configuration.dll
+c:\Users\user\dotnet-course-code\HelloWORLD\bin\Debug\net8.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+c:\Users\user\dotnet-course-code\HelloWORLD\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Json.dll
+c:\Users\user\dotnet-course-code\HelloWORLD\bin\Debug\net8.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+c:\Users\user\dotnet-course-code\HelloWORLD\bin\Debug\net8.0\Microsoft.Extensions.FileProviders.Physical.dll
+c:\Users\user\dotnet-course-code\HelloWORLD\bin\Debug\net8.0\Microsoft.Extensions.FileSystemGlobbing.dll
+c:\Users\user\dotnet-course-code\HelloWORLD\bin\Debug\net8.0\appsettings.json
