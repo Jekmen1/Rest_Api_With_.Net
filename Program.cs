@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Dynamic;
 using System.Linq;
 using Dapper;
+using Helloworld.Data;
 using Helloworld.Models;
 using Microsoft.Data.SqlClient;
 
@@ -17,14 +18,14 @@ namespace Helloworld
         
         public static void Main(string[] args)
         {
-        string connectionString = "Server=localhost;Database=DotNetCourseDatabase;TrustServerCertificate=true;Trusted_Connection=true;";
         
+        DataContextDapper dapper = new DataContextDapper();
 
-        IDbConnection dbConnection = new SqlConnection(connectionString);
+
 
         string sqlCommand = "SELECT GETDATE()";
 
-        DateTime rightNow = dbConnection.QuerySingle<DateTime>(sqlCommand);
+        DateTime rightNow = dapper.LoadDataSingle<DateTime>(sqlCommand);
 
         Console.WriteLine(rightNow);
 
@@ -55,12 +56,12 @@ namespace Helloworld
 
             
             Console.WriteLine(sql);
-            int result = dbConnection.Execute(sql);
+            bool result =dapper.ExecuteSql(sql);
             Console.WriteLine(result);
 
             string sqlSelect = @"SELECT * FROM TutorialAppSchema.Computer";
 
-            IEnumerable<Computer> computers = dbConnection.Query<Computer>(sqlSelect);
+            IEnumerable<Computer> computers = dapper.LoadData<Computer>(sqlSelect);
 
             foreach(Computer singleComputer in computers)
             {
