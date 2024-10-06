@@ -24,16 +24,7 @@ namespace Helloworld
         .AddJsonFile("appsettings.json")
         .Build();
 
-        DataContextDapper dapper = new DataContextDapper(config);
-        DataContextEF entityFramework = new DataContextEF(config);
 
-
-
-        string sqlCommand = "SELECT GETDATE()";
-
-        DateTime rightNow = dapper.LoadDataSingle<DateTime>(sqlCommand);
-
-        Console.WriteLine(rightNow);
 
             Computer computer = new Computer()
             {
@@ -45,68 +36,34 @@ namespace Helloworld
                 VideoCard = "rtx 2060"
             };
             
-            entityFramework.Add(computer);
-            entityFramework.SaveChanges();
-
-            string sql = @"INSERT INTO TutorialAppSchema.Computer (
-                Motherboard,
-                HasWifi,
-                HasLTE,
-                ReleaseDate,
-                Price,
-                VideoCard
-            ) VALUES ('" + computer.Motherboard
-                        + "', '" + computer.HasWifi
-                        + "', '" + computer.HasLTE
-                        + "', '" + computer.ReleaseDate
-                        + "', '" + computer.Price
-                        + "', '" + computer.VideoCard
-            + "')";
-
             
-            Console.WriteLine(sql);
-            bool result = dapper.ExecuteSql(sql);
-            Console.WriteLine(result);
-
-            string sqlSelect = @"SELECT * FROM TutorialAppSchema.Computer";
-
-            IEnumerable<Computer> computers = dapper.LoadData<Computer>(sqlSelect);
-
-
-            foreach(Computer singleComputer in computers)
-            {
-                Console.WriteLine("'" + computer.ComputerId
+        string sql = "\n" + @"INSERT INTO TutorialAppSchema.Computer(
+        Motherboard,
+        HasWifi,
+        HasLTE,
+        ReleaseDate,
+        Price,
+        VideoCard
+        ) VALUES ('" + computer.ComputerId
                         + "', '" + computer.Motherboard
                         + "', '" + computer.HasWifi
                         + "', '" + computer.HasLTE
                         + "', '" + computer.ReleaseDate
                         + "', '" + computer.Price
                         + "', '" + computer.VideoCard
-            + "')");
-            }
-
-            Console.WriteLine(computer.Motherboard);
-
-            IEnumerable<Computer>? computerEF = entityFramework.Computer?.ToList<Computer>();
-            if(computerEF != null)
-            {
-                foreach(Computer singleComputer in computers)
-                {
-                    Console.WriteLine("'" + computer.ComputerId
-                            + "', '" + computer.Motherboard
-                            + "', '" + computer.HasWifi
-                            + "', '" + computer.HasLTE
-                            + "', '" + computer.ReleaseDate
-                            + "', '" + computer.Price
-                            + "', '" + computer.VideoCard
-                        + "')");
-                }
-            }
-
-
-            Console.WriteLine(computer.Motherboard);
+                    + "')\n";
             
+        File.WriteAllText("log.txt", sql);
+
+        using StreamWriter openFile = new("log.txt", append: true);
+
         
+        openFile.WriteLine(sql);
+        openFile.Close();
+
+        string result = File.ReadAllText("log.txt");
+        
+        Console.WriteLine(result);
         }
     }
 }
