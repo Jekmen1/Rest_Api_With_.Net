@@ -75,3 +75,4 @@ c:\Users\user\dotnet-course-code\HelloWORLD\bin\Debug\net8.0\Microsoft.Extension
 c:\Users\user\dotnet-course-code\HelloWORLD\bin\Debug\net8.0\Microsoft.Extensions.FileProviders.Physical.dll
 c:\Users\user\dotnet-course-code\HelloWORLD\bin\Debug\net8.0\Microsoft.Extensions.FileSystemGlobbing.dll
 c:\Users\user\dotnet-course-code\HelloWORLD\bin\Debug\net8.0\appsettings.json
+C:\Users\user\dotnet-course-code\HelloWORLD\bin\Debug\net8.0\Newtonsoft.Json.dll
