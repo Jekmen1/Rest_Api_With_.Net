@@ -6,6 +6,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using AutoMapper;
 using Dapper;
 using Helloworld.Data;
 using Helloworld.Models;
@@ -65,63 +66,95 @@ namespace Helloworld
         // openFile.WriteLine(sql);
         // openFile.Close();
 
-        string computersJson = File.ReadAllText("Computers.json");
+        string computersJson = File.ReadAllText("ComputersSnake.json");
 
-        JsonSerializerOptions options = new JsonSerializerOptions()
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase   
-        };
+        Mapper mapper = new Mapper(new MapperConfiguration(cfg => {
+            cfg.CreateMap<ComputerSnake, Computer>()
+                .ForMember(destination => destination.ComputerId, options =>
+                 options.MapFrom(source => source.computer_id))
+                .ForMember(destination => destination.CPUCores, options =>
+                 options.MapFrom(source => source.cpu_cores))
+                .ForMember(destination => destination.HasLTE, options =>
+                 options.MapFrom(source => source.has_lte))
+                .ForMember(destination => destination.HasWifi, options =>
+                 options.MapFrom(source => source.has_wifi))
+                .ForMember(destination => destination.Motherboard, options =>
+                 options.MapFrom(source => source.motherboard))
+                .ForMember(destination => destination.VideoCard, options =>
+                 options.MapFrom(source => source.video_card))
+                .ForMember(destination => destination.ReleaseDate, options =>
+                 options.MapFrom(source => source.release_data))
+                .ForMember(destination => destination.Price, options =>
+                 options.MapFrom(source => source.price * .8m));
+        }));
         
-        // // Console.WriteLine(computersJson);
-
-        IEnumerable<Computer>? computersNewtonSoft = System.Text.Json.JsonSerializer.Deserialize<IEnumerable<Computer>>(computersJson, options);
-        IEnumerable<Computer>? computersSystem = JsonConvert.DeserializeObject<IEnumerable<Computer>>(computersJson);
-
-        if (computersNewtonSoft != null)
+        IEnumerable<ComputerSnake>? computersSystem = System.Text.Json.JsonSerializer.Deserialize<IEnumerable<ComputerSnake>>(computersJson);
+        
+        if(computersSystem != null)
         {
-            foreach(Computer computer in computersNewtonSoft)
+            IEnumerable<Computer> computerResult = mapper.Map<IEnumerable<Computer>>(computersSystem);
+
+            foreach(Computer computer in computerResult)
             {
-                string sql = "\n" + @"INSERT INTO TutorialAppSchema.Computer(
-                    Motherboard,
-                    HasWifi,
-                    HasLTE,
-                    ReleaseDate,
-                    Price,
-                    VideoCard
-                ) VALUES ('" + EscapeSingleQuote(computer.Motherboard)
-                                + "', '" + computer.HasWifi
-                                + "', '" + computer.HasLTE
-                                + "', '" + computer.ReleaseDate
-                                + "', '" + computer.Price
-                                + "', '" +EscapeSingleQuote (computer.VideoCard)
-                            + "')\n";
-
-                dapper.ExecuteSql(sql);
-
             }
         }
 
-        JsonSerializerSettings settings = new JsonSerializerSettings()
-        {
-            ContractResolver = new CamelCasePropertyNamesContractResolver()
-        };
+        // JsonSerializerOptions options = new JsonSerializerOptions()
+        // {
+        //     PropertyNamingPolicy = JsonNamingPolicy.CamelCase   
+        // };
+        
+        // // // Console.WriteLine(computersJson);
 
-        string computersCopy = JsonConvert.SerializeObject(computersNewtonSoft, settings);
-        File.WriteAllText("computersCopyNewtonsoft.txt", computersCopy);
+        // IEnumerable<Computer>? computersNewtonSoft = System.Text.Json.JsonSerializer.Deserialize<IEnumerable<Computer>>(computersJson, options);
+        // IEnumerable<Computer>? computersSystem = JsonConvert.DeserializeObject<IEnumerable<Computer>>(computersJson);
+
+        // if (computersNewtonSoft != null)
+        // {
+        //     foreach(Computer computer in computersNewtonSoft)
+        //     {
+        //         string sql = "\n" + @"INSERT INTO TutorialAppSchema.Computer(
+        //             Motherboard,
+        //             HasWifi,
+        //             HasLTE,
+        //             ReleaseDate,
+        //             Price,
+        //             VideoCard
+        //         ) VALUES ('" + EscapeSingleQuote(computer.Motherboard)
+        //                         + "', '" + computer.HasWifi
+        //                         + "', '" + computer.HasLTE
+        //                         + "', '" + computer.ReleaseDate
+        //                         + "', '" + computer.Price
+        //                         + "', '" +EscapeSingleQuote (computer.VideoCard)
+        //                     + "')\n";
+
+        //         dapper.ExecuteSql(sql);
+
+        //     }
+        // }
+
+        // JsonSerializerSettings settings = new JsonSerializerSettings()
+        // {
+        //     ContractResolver = new CamelCasePropertyNamesContractResolver()
+        // };
+
+        // string computersCopy = JsonConvert.SerializeObject(computersNewtonSoft, settings);
+        // File.WriteAllText("computersCopyNewtonsoft.txt", computersCopy);
 
 
 
 
-        string computersCopy2 = System.Text.Json.JsonSerializer.Serialize(computersSystem, options);
-        File.WriteAllText("computersCopyNewtonsoft2.txt", computersCopy2);
-        }
+        // string computersCopy2 = System.Text.Json.JsonSerializer.Serialize(computersSystem, options);
+        // File.WriteAllText("computersCopyNewtonsoft2.txt", computersCopy2);
+        // }
 
 
-        static string EscapeSingleQuote(string input)
-        {
-            string output = input.Replace("'", "''");
+        // static string EscapeSingleQuote(string input)
+        // {
+        //     string output = input.Replace("'", "''");
 
-            return output;
-        }
+        //     return output;
+        // }
     }
+}
 }
